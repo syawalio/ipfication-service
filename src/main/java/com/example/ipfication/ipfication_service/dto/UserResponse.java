@@ -2,8 +2,10 @@ package com.example.ipfication.ipfication_service.dto;
 
 public class UserResponse {
     private String sub;
-    private String name;
-    private String email;
+    private boolean phoneNumberVerified;
+    private String phoneNumber;
+    private String loginHint;
+    private String mobileId;
 
     // Getters and Setters
     public String getSub() {
@@ -14,19 +16,35 @@ public class UserResponse {
         this.sub = sub;
     }
 
-    public String getName() {
-        return name;
+    public boolean isPhoneNumberVerified() {
+        return phoneNumberVerified;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setPhoneNumberVerified(boolean phoneNumberVerified) {
+        this.phoneNumberVerified = phoneNumberVerified;
     }
 
-    public String getEmail() {
-        return email;
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getLoginHint() {
+        return loginHint;
+    }
+
+    public void setLoginHint(String loginHint) {
+        this.loginHint = loginHint;
+    }
+
+    public String getMobileId() {
+        return mobileId;
+    }
+
+    public void setMobileId(String mobileId) {
+        this.mobileId = mobileId;
     }
 }

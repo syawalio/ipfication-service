@@ -13,10 +13,8 @@ public class TokenRequestDTO {
         this.code = code;
         this.redirectUri = redirectUri;
         this.grantType = grantType;
-
     }
 
-    // Getters and Setters
     public String getClientId() {
         return clientId;
     }
@@ -48,6 +46,3 @@ public class TokenRequestDTO {
         this.grantType = grantType;
     }
 }
-
-
-
