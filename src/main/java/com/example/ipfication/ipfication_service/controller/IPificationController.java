@@ -5,6 +5,7 @@ import com.example.ipfication.ipfication_service.dto.UserResponse;
 import com.example.ipfication.ipfication_service.service.IPificationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping("/api/ipification")
@@ -16,24 +17,18 @@ public class IPificationController {
     }
 
     @PostMapping("/token")
-    public ResponseEntity<?> exchangeToken(@RequestParam String code) {
-        try {
-            TokenResponseDTO tokenResponse = ipificationService.exchangeToken(code);
-            return ResponseEntity.ok(tokenResponse);
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body("Error exchanging token: " + e.getMessage());
-        }
+    public Mono<ResponseEntity<TokenResponseDTO>> exchangeToken(@RequestParam String code) {
+        return ipificationService.exchangeToken(code)
+                .map(ResponseEntity::ok)
+                .onErrorResume(e -> Mono.just(ResponseEntity.status(500).body(new TokenResponseDTO("Error exchanging token: " + e.getMessage()))));
     }
 
     @GetMapping("/user_info")
-    public ResponseEntity<?> getUserInfo(@RequestHeader("Authorization") String authorization) {
-        try {
-            String accessToken = authorization.replace("Bearer ", "");
-            UserResponse userInfoResponse = ipificationService.getUserInfo(accessToken);
-            return ResponseEntity.ok(userInfoResponse);
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body("Error fetching user info: " + e.getMessage());
-        }
+    public Mono<ResponseEntity<UserResponse>> getUserInfo(@RequestHeader("Authorization") String authorization) {
+        String accessToken = authorization.replace("Bearer ", "");
+        return ipificationService.getUserInfo(accessToken)
+                .map(ResponseEntity::ok)
+                .onErrorResume(e -> Mono.just(ResponseEntity.status(500).body(new UserResponse("Error fetching user info: " + e.getMessage()))));
     }
 }
 

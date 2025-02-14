@@ -9,6 +9,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.util.ReflectionTestUtils;
+import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,6 +31,12 @@ class IPificationServiceTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+        // Mocking the @Value fields
+        ReflectionTestUtils.setField(ipificationService, "clientId", "testClientId");
+        ReflectionTestUtils.setField(ipificationService, "clientSecret", "testClientSecret");
+        ReflectionTestUtils.setField(ipificationService, "redirectUri", "http://localhost:8080/callback");
+        ReflectionTestUtils.setField(ipificationService, "tokenUrl", "https://api.ipification.com/oauth/realms/ipification/protocol/openid-connect/token");
+        ReflectionTestUtils.setField(ipificationService, "userInfoUrl", "https://api.ipification.com/oauth/realms/ipification/protocol/openid-connect/userinfo");
     }
 
     @Test
@@ -40,9 +48,9 @@ class IPificationServiceTest {
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/x-www-form-urlencoded");
 
-        when(HttpUtil.sendPost(eq(tokenUrl), eq(headers), anyString())).thenReturn(ResponseEntity.ok(responseBody));
+        when(HttpUtil.sendPost(eq(tokenUrl), eq(headers), anyString())).thenReturn(Mono.just(ResponseEntity.ok(responseBody)));
 
-        TokenResponseDTO tokenResponse = ipificationService.exchangeToken(code);
+        TokenResponseDTO tokenResponse = ipificationService.exchangeToken(code).block();
 
         assertNotNull(tokenResponse);
         assertEquals("testAccessToken", tokenResponse.getAccessToken());
@@ -57,9 +65,9 @@ class IPificationServiceTest {
         Map<String, String> headers = new HashMap<>();
         headers.put("Authorization", "Bearer " + accessToken);
 
-        when(HttpUtil.sendGet(eq(userInfoUrl), eq(headers))).thenReturn(ResponseEntity.ok(responseBody));
+        when(HttpUtil.sendGet(eq(userInfoUrl), eq(headers))).thenReturn(Mono.just(ResponseEntity.ok(responseBody)));
 
-        UserResponse userResponse = ipificationService.getUserInfo(accessToken);
+        UserResponse userResponse = ipificationService.getUserInfo(accessToken).block();
 
         assertNotNull(userResponse);
         assertEquals("testSub", userResponse.getSub());

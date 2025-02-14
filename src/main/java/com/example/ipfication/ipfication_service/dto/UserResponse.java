@@ -6,8 +6,12 @@ public class UserResponse {
     private String phoneNumber;
     private String loginHint;
     private String mobileId;
+    private String errorMessage;
 
-    // Getters and Setters
+    public UserResponse(String errorMessage) {
+        this.errorMessage = errorMessage;
+    }
+
     public String getSub() {
         return sub;
     }
@@ -46,5 +50,13 @@ public class UserResponse {
 
     public void setMobileId(String mobileId) {
         this.mobileId = mobileId;
+    }
+
+    public String getErrorMessage() {
+        return errorMessage;
+    }
+
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
     }
 }

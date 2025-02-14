@@ -6,6 +6,7 @@ public class TokenResponseDTO {
     private String expiresIn;
     private String refreshToken;
     private String idToken;
+    private String errorMessage;
 
     public TokenResponseDTO(String accessToken, String tokenType, String expiresIn, String refreshToken, String idToken) {
         this.accessToken = accessToken;
@@ -15,7 +16,10 @@ public class TokenResponseDTO {
         this.idToken = idToken;
     }
 
-    // Getters and Setters
+    public TokenResponseDTO(String errorMessage) {
+        this.errorMessage = errorMessage;
+    }
+
     public String getAccessToken() {
         return accessToken;
     }
@@ -45,5 +49,11 @@ public class TokenResponseDTO {
     }
     public void setIdToken(String idToken) {
         this.idToken = idToken;
+    }
+    public String getErrorMessage() {
+        return errorMessage;
+    }
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
     }
 }
