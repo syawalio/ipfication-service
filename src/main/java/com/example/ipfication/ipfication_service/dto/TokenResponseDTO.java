@@ -20,6 +20,15 @@ public class TokenResponseDTO {
         this.errorMessage = errorMessage;
     }
 
+    public TokenResponseDTO(String accessToken, String tokenType, String expiresIn, String refreshToken, String idToken, String errorMessage) {
+        this.accessToken = accessToken;
+        this.tokenType = tokenType;
+        this.expiresIn = expiresIn;
+        this.refreshToken = refreshToken;
+        this.idToken = idToken;
+        this.errorMessage = errorMessage;
+    }
+
     public String getAccessToken() {
         return accessToken;
     }

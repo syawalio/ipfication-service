@@ -9,7 +9,9 @@ import reactor.core.publisher.Mono;
 import java.util.Map;
 
 public class HttpUtil {
-    private static final WebClient webClient = WebClient.builder().build();
+    private static final WebClient webClient = WebClient.builder()
+            .defaultHeader("User-Agent", "IPificationService")
+            .build();
 
     public static Mono<ResponseEntity<String>> sendPost(String url, Map<String, String> headers, String body) {
         return webClient.post()

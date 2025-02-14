@@ -1,0 +1,6 @@
+ipification:
+  client-id: yourClientId
+  client-secret: yourClientSecret
+  redirect-uri: yourRedirectUri
+  token-uri: yourTokenUri
+  user-info-uri: yourUserInfoUri
